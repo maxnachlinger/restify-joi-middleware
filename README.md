@@ -1,2 +1,2 @@
-# restify-express-joi-validator
-Simple joi middleware for express and restify.
+# restify-joi-middleware
+Simple joi middleware for restify.
