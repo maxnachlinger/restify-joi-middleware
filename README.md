@@ -69,12 +69,9 @@ server.put({
 
 If you don't like how errors are returned, you may pass an override function to change that.
 ```javascript
-// you can pass along all the joi options here
 server.use(validator({
-  convert: true,
-  allowUnknown: true,
-  abortEarly: false
-}, function (err, req, res, next) {
+  // joi config here
+}, function (err, req, res, next) { // <-- override function 
   return res.send(400, { status: err.name, errors: err.details });
   return next(); // make sure to call next
 }));
