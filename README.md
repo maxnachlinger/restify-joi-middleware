@@ -68,14 +68,18 @@ server.put({
 ```
 
 ### Options:
-If you don't like how errors are returned, or transformed from Joi errors to restify errors, you can change all those things. For example:
+If you don't like how errors are returned (``errorResponder``), or transformed (``errorTransformer``) from Joi errors to restify errors, you can change all those things. For example:
 ```javascript
 server.use(validator({
   // joi options here
 }, {
+
+  // changes how joi errors are transformed to be returned
   errorTransformer: function (validationInput, joiError) {
     return 'Everything is fine, really.';
   },
+  
+  // changes how errors are returned
   errorResponder: function (transformedErr, req, res, next) {
     res.send(200, transformedErr); // 200 - Everything is fine, really.
     return next();
