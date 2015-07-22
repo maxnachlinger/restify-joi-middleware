@@ -4,8 +4,9 @@ var Joi = require('joi');
 module.exports = function (joiOptions, errorInterceptor) {
   joiOptions = joiOptions || {};
   errorInterceptor = errorInterceptor || function (err, req, res, next) {
-      return res.send(400, { status: err.name, errors: err.details });
-      return next();
+      var retError = new restify.errors.BadRequestError(err.message);
+      retError.body.data = err.details;
+      return next(retError);
     };
 
   var reqKeysToValidate = [
