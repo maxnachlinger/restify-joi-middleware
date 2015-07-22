@@ -1,20 +1,26 @@
 var restify = require('restify');
 var Joi = require('joi');
 
-module.exports = function (joiOptions, errorInterceptor) {
+module.exports = function (joiOptions, options) {
+  options = options || {};
   joiOptions = joiOptions || {};
-  errorInterceptor = errorInterceptor || function (err, req, res, next) {
-      var retError = new restify.errors.BadRequestError(err.message);
-      retError.body.data = err.details;
-      return next(retError);
+
+  options.keysToValidate = options.keysToValidate || [
+      'params',
+      'headers',
+      'query',
+      'body'
+    ];
+
+  options.errorTransformer = options.errorTransformer || function (validationInput, joiError) {
+      var retError = new restify.errors.BadRequestError(joiError.message);
+      retError.body.data = joiError.details;
+      return retError;
     };
 
-  var reqKeysToValidate = [
-    'params',
-    'headers',
-    'query',
-    'body'
-  ];
+  options.errorResponder = options.errorResponder || function (transformedErr, req, res, next) {
+      return next(transformedErr);
+    };
 
   return function middleware(req, res, next) {
     var validation = req.route.validation;
@@ -25,18 +31,22 @@ module.exports = function (joiOptions, errorInterceptor) {
 
     var toValidate = {};
 
-    reqKeysToValidate.forEach(function (key) {
+    options.keysToValidate.forEach(function (key) {
       toValidate[key] = req[key] || {};
       validation[key] = validation[key] || {};
     });
 
     var result = Joi.validate(toValidate, validation, joiOptions);
+
     if (result.error) {
-      return errorInterceptor(result.error, req, res, next);
+      return options.errorResponder(
+        options.errorTransformer(toValidate, result.error),
+        req, res, next
+      );
     }
 
     // write defaults back to request
-    reqKeysToValidate.forEach(function (key) {
+    options.keysToValidate.forEach(function (key) {
       if (!result.value[key] || !req[key]) {
         return;
       }

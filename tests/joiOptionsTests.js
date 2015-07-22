@@ -2,7 +2,7 @@ var test = require('tape');
 var Joi = require('joi');
 var middleware = require('../');
 
-test(' when the allowUnknown option is set, validation works with additional req.params for which no ' +
+test('when the allowUnknown option is set, validation works with additional req.params for which no ' +
   'validation is defined', function (t) {
   var req = {
     params: {
@@ -24,7 +24,7 @@ test(' when the allowUnknown option is set, validation works with additional req
   });
 });
 
-test(' when the allowUnknown option is not set, validation fails with additional req.params for which no ' +
+test('when the allowUnknown option is not set, validation fails with additional req.params for which no ' +
   'validation is defined', function (t) {
   var req = {
     params: {

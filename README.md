@@ -67,14 +67,20 @@ server.put({
 });
 ```
 
-If you don't like how errors are returned, you may pass an override function to change that.
+### Options:
+If you don't like how errors are returned, or transformed from Joi errors to restify errors, you can change all those things. For example:
 ```javascript
 server.use(validator({
-  // joi config here
-}, function (err, req, res, next) { // <-- override function 
-  return res.send(400, { status: err.name, errors: err.details });
-  return next(); // make sure to call next
-}));
+  // joi options here
+}, {
+  errorTransformer: function (validationInput, joiError) {
+    return 'Everything is fine, really.';
+  },
+  errorResponder: function (transformedErr, req, res, next) {
+    res.send(200, transformedErr); // 200 - Everything is fine, really.
+    return next();
+  }
+});
 
 ```
 The following items in the http request can be validated:
