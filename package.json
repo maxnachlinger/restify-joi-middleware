@@ -1,0 +1,26 @@
+{
+  "name": "restify-joi-middleware",
+  "version": "0.0.1",
+  "description": "Simple joi middleware for restify.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape tests/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxnachlinger/restify-joi-middleware.git"
+  },
+  "author": "Max Nachlinger <max@somewhere.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxnachlinger/restify-joi-middleware/issues"
+  },
+  "homepage": "https://github.com/maxnachlinger/restify-joi-middleware#readme",
+  "dependencies": {
+    "joi": "^6.6.0",
+    "restify": "^3.0.3"
+  },
+  "devDependencies": {
+    "tape": "^4.0.1"
+  }
+}
