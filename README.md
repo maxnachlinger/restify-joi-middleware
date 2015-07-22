@@ -1,2 +1,3 @@
 # restify-joi-middleware
-Simple joi middleware for restify.
+Another joi validation middleware for restify.
+

@@ -1,0 +1,16 @@
+{
+  "name": "restify-joi-middleware-example",
+  "version": "0.0.1",
+  "description": "Simple joi middleware example for restify.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Max Nachlinger <max@somewhere.com>",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.4.0",
+    "joi": "^6.6.0",
+    "restify": "^3.0.3"
+  }
+}
