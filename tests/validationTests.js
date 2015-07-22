@@ -42,3 +42,22 @@ test("validation allows valid input", function (t) {
     t.end();
   });
 });
+
+test("validation blocks missing input", function (t) {
+  // notice there's no req.params
+  var req = {
+    route: {
+      validation: {
+        params: {
+          id: Joi.number().required()
+        }
+      }
+    }
+  };
+
+  middleware()(req, {send: t.fail}, function (err) {
+    t.ok(err, 'Returns and error');
+    t.equal(err.statusCode, 400, 'Error has a statusCode of 400');
+    t.end();
+  });
+});
