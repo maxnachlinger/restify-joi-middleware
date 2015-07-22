@@ -1,5 +1,5 @@
 # restify-joi-middleware
-Another joi validation middleware for restify.
+Another joi validation middleware for restify. Inspired by [restify-joi-validator](https://github.com/markotom/restify-joi-validator)
 
 [![Build Status](https://travis-ci.org/maxnachlinger/restify-joi-middleware.svg?branch=master)](https://travis-ci.org/maxnachlinger/restify-joi-middleware)
 
@@ -18,7 +18,13 @@ var validator = require('restify-joi-middleware');
 
 var server = restify.createServer();
 
-server.use(validator());
+// you can pass along all the joi options here
+server.use(validator({
+  convert: true,
+  allowUnknown: true,
+  abortEarly: false
+}));
+
 // additional middleware etc
 
 server.get({
@@ -61,6 +67,19 @@ server.put({
 });
 ```
 
+If you don't like how errors are returned, you may pass an override function to change that.
+```javascript
+// you can pass along all the joi options here
+server.use(validator({
+  convert: true,
+  allowUnknown: true,
+  abortEarly: false
+}, function (err, req, res, next) {
+  return res.send(400, { status: err.name, errors: err.details });
+  return next(); // make sure to call next
+}));
+
+```
 The following items in the http request can be validated:
 ```
 params

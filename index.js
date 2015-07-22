@@ -1,17 +1,19 @@
 var restify = require('restify');
 var Joi = require('joi');
-/*
- joiOptions - options to be passed to Joi, e.g. {convert: true, allowUnknown: true, abortEarly: false}
- errorInterceptor - function (err, req, res, next) {} - you can provide this and it will be called whenever a validation
- error occurs. Make sure to call next()!
- */
+
 module.exports = function (joiOptions, errorInterceptor) {
   joiOptions = joiOptions || {};
   errorInterceptor = errorInterceptor || function (err, req, res, next) {
-      return next(new restify.errors.BadRequestError(err.message));
+      return res.send(400, { status: err.name, errors: err.details });
+      return next();
     };
 
-  var reqKeysToValidate = ['params', 'headers', 'query', 'body'];
+  var reqKeysToValidate = [
+    'params',
+    'headers',
+    'query',
+    'body'
+  ];
 
   return function middleware(req, res, next) {
     var validation = req.route.validation;
