@@ -11,6 +11,8 @@ module.exports = function (joiOptions, errorInterceptor) {
       return next(new restify.errors.BadRequestError(err.message));
     };
 
+  var reqKeysToValidate = ['params', 'headers', 'query', 'body'];
+
   return function middleware(req, res, next) {
     var validation = req.route.validation;
 
@@ -18,7 +20,6 @@ module.exports = function (joiOptions, errorInterceptor) {
       return setImmediate(next);
     }
 
-    var reqKeysToValidate = ['params', 'headers', 'query', 'body'];
     var toValidate = {};
 
     reqKeysToValidate.forEach(function (key) {
