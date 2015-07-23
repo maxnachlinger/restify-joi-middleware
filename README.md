@@ -67,6 +67,27 @@ server.put({
 });
 ```
 
+### Quick Example
+Given the server above:
+```sh
+curl 'http://localhost:8081/'
+# result (formatted a bit)
+{
+   "code":"BadRequestError",
+   "message":"",
+   "data":[
+      {
+         "message":"\"id\" must be a number",
+         "path":"params.id",
+         "type":"number.base",
+         "context":{
+            "key":"id"
+         }
+      }
+   ]
+}
+``
+
 ### Options:
 If you don't like how errors are returned (``errorResponder``), or transformed (``errorTransformer``) from Joi errors to restify errors, you can change all those things. For example:
 ```javascript
@@ -76,21 +97,12 @@ server.use(validator({
 
   // changes how joi errors are transformed to be returned
   errorTransformer: function (validationInput, joiError) {
-    return 'Everything is fine, really.';
+      return new restify.errors.BadRequestError(joiError.message);
   },
   
   // changes how errors are returned
   errorResponder: function (transformedErr, req, res, next) {
-    res.send(200, transformedErr); // 200 - Everything is fine, really.
+    res.send(400, transformedErr);
     return next();
   }
 });
-
-```
-The following items in the http request can be validated:
-```
-params
-headers
-query
-body
-```

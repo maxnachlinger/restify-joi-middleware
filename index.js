@@ -5,15 +5,6 @@ module.exports = function (joiOptions, options) {
   options = options || {};
   joiOptions = joiOptions || {};
 
-  options.keysToValidate = options.keysToValidate || [
-      'params',
-      'headers',
-      'query',
-      'body',
-      'cookies',
-      'user'
-    ];
-
   options.errorTransformer = options.errorTransformer || function (validationInput, joiError) {
       var retError = new restify.errors.BadRequestError();
       retError.body.data = joiError.details;
@@ -31,12 +22,12 @@ module.exports = function (joiOptions, options) {
       return setImmediate(next);
     }
 
-    var toValidate = {};
+    var keysToValidate = Object.keys(validation);
 
-    options.keysToValidate.forEach(function (key) {
-      toValidate[key] = req[key] || {};
-      validation[key] = validation[key] || {};
-    });
+    var toValidate = keysToValidate.reduce(function(accum, key) {
+      accum[key] = req[key] || {};
+      return accum;
+    }, {});
 
     var result = Joi.validate(toValidate, validation, joiOptions);
 
@@ -48,7 +39,7 @@ module.exports = function (joiOptions, options) {
     }
 
     // write defaults back to request
-    options.keysToValidate.forEach(function (key) {
+    keysToValidate.forEach(function (key) {
       if (!result.value[key] || !req[key]) {
         return;
       }
