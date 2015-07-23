@@ -86,7 +86,7 @@ curl 'http://localhost:8081/'
       }
    ]
 }
-``
+```
 
 ### Options:
 If you don't like how errors are returned (``errorResponder``), or transformed (``errorTransformer``) from Joi errors to restify errors, you can change all those things. For example:
