@@ -1,5 +1,6 @@
 var restify = require('restify');
 var Joi = require('joi');
+var _options = {};
 
 module.exports = function (joiOptions, options) {
   options = options || {};
@@ -23,6 +24,8 @@ module.exports = function (joiOptions, options) {
     };
 
   return function middleware(req, res, next) {
+    this.options = options;
+
     var validation = req.route.validation;
 
     if (!validation) {
