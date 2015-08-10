@@ -52,18 +52,20 @@ server.post({
 });
 
 server.put({
-  path: '/:id',
-  validation: {
-    params: {
-      id: Joi.number().min(0).required()
-    },
-    body: {
-      name: Joi.string().required()
-    }
-  }
+ path: '/:id',
+ // Joi.object().keys({}) schemas work too
+ validation: Joi.object().keys({
+   params: {
+     id: Joi.number().min(0).required()
+   },
+   body: {
+     id: Joi.number().min(0).required()
+     name: Joi.string().required()
+   }
+ }).assert('params.id', Joi.ref('body.id'))
 }, function (req, res, next) {
-  res.send(200, {id: 1, name: req.body.name});
-  next();
+ res.send(200, {id: 1, name: req.body.name});
+ next();
 });
 ```
 
@@ -71,7 +73,7 @@ server.put({
 Given the server above:
 ```sh
 curl 'http://localhost:8081/'
-# result (formatted a bit)
+# result
 {
    "code":"BadRequestError",
    "message":"",
@@ -89,20 +91,23 @@ curl 'http://localhost:8081/'
 ```
 
 ### Options:
-If you don't like how errors are returned (``errorResponder``), or transformed (``errorTransformer``) from Joi errors to restify errors, you can change all those things. For example:
+If you don't like how errors are returned or transformed from Joi errors to restify errors, you can change that. For example:
 ```javascript
 server.use(validator({
   // joi options here
 }, {
 
   // changes how joi errors are transformed to be returned
+  
   errorTransformer: function (validationInput, joiError) {
       return new restify.errors.BadRequestError(joiError.message);
   },
   
   // changes how errors are returned
+  
   errorResponder: function (transformedErr, req, res, next) {
     res.send(400, transformedErr);
     return next();
   }
 });
+```

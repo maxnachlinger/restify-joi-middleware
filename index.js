@@ -22,9 +22,9 @@ module.exports = function (joiOptions, options) {
       return setImmediate(next);
     }
 
-    var keysToValidate = Object.keys(validation);
+    var keysToValidate = getKeysToValidate(validation);
 
-    var toValidate = keysToValidate.reduce(function(accum, key) {
+    var toValidate = keysToValidate.reduce(function (accum, key) {
       accum[key] = req[key] || {};
       return accum;
     }, {});
@@ -49,3 +49,12 @@ module.exports = function (joiOptions, options) {
     next();
   };
 };
+
+function getKeysToValidate(validation) {
+  if (!validation.isJoi) {
+    return Object.keys(validation);
+  }
+  return validation._inner.children.map(function (child) {
+    return child.key;
+  });
+}
