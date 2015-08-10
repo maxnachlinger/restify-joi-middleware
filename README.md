@@ -1,5 +1,5 @@
 # restify-joi-middleware
-Another joi validation middleware for restify. Inspired by [restify-joi-validator](https://github.com/markotom/restify-joi-validator)
+Another [joi](https://github.com/hapijs/joi) validation middleware for restify. Inspired by [restify-joi-validator](https://github.com/markotom/restify-joi-validator)
 
 [![Build Status](https://travis-ci.org/maxnachlinger/restify-joi-middleware.svg?branch=master)](https://travis-ci.org/maxnachlinger/restify-joi-middleware)
 
