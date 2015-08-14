@@ -2,8 +2,12 @@ var restify = require('restify');
 var Joi = require('joi');
 
 module.exports = function (joiOptions, options) {
+  joiOptions = joiOptions || {
+      convert: true,
+      allowUnknown: true,
+      abortEarly: false
+    };
   options = options || {};
-  joiOptions = joiOptions || {};
 
   options.errorTransformer = options.errorTransformer || function (validationInput, joiError) {
       var retError = new restify.errors.BadRequestError();
@@ -15,6 +19,8 @@ module.exports = function (joiOptions, options) {
       return next(transformedErr);
     };
 
+  options.keysToValidate = options.keysToValidate || ['params', 'body', 'query', 'user', 'headers', 'trailers'];
+
   return function middleware(req, res, next) {
     var validation = req.route.validation;
 
@@ -22,10 +28,19 @@ module.exports = function (joiOptions, options) {
       return setImmediate(next);
     }
 
-    var keysToValidate = getKeysToValidate(validation);
+    var toValidate = options.keysToValidate.reduce(function (accum, key) {
+      var value = req[key];
 
-    var toValidate = keysToValidate.reduce(function (accum, key) {
-      accum[key] = req[key] || {};
+      if(!value) {
+        // e.g. if the allowUnknown option is not set, and there's no value for body, then don't add body: {} to our
+        // object to validate
+        if(!joiOptions.allowUnknown) {
+          return accum;
+        }
+        value = {};
+      }
+
+      accum[key] = value;
       return accum;
     }, {});
 
@@ -39,7 +54,7 @@ module.exports = function (joiOptions, options) {
     }
 
     // write defaults back to request
-    keysToValidate.forEach(function (key) {
+    options.keysToValidate.forEach(function (key) {
       if (!result.value[key] || !req[key]) {
         return;
       }
@@ -49,12 +64,3 @@ module.exports = function (joiOptions, options) {
     next();
   };
 };
-
-function getKeysToValidate(validation) {
-  if (!validation.isJoi) {
-    return Object.keys(validation);
-  }
-  return validation._inner.children.map(function (child) {
-    return child.key;
-  });
-}

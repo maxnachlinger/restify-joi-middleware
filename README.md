@@ -94,17 +94,20 @@ curl 'http://localhost:8081/'
 If you don't like how errors are returned or transformed from Joi errors to restify errors, you can change that. For example:
 ```javascript
 server.use(validator({
-  // joi options here
+  convert: true,
+  allowUnknown: true,
+  abortEarly: false
+  // .. all additional joi options
 }, {
-
-  // changes how joi errors are transformed to be returned
+  // changes the request keys validated
+  keysToValidate: ['params', 'body', 'query', 'user', 'headers', 'trailers'],
   
+  // changes how joi errors are transformed to be returned
   errorTransformer: function (validationInput, joiError) {
       return new restify.errors.BadRequestError(joiError.message);
   },
   
   // changes how errors are returned
-  
   errorResponder: function (transformedErr, req, res, next) {
     res.send(400, transformedErr);
     return next();

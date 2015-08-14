@@ -1,6 +1,6 @@
 {
   "name": "restify-joi-middleware",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Simple joi middleware for restify.",
   "main": "index.js",
   "scripts": {

@@ -40,7 +40,7 @@ test('when the allowUnknown option is not set, validation fails with additional 
     }
   };
 
-  middleware()(req, {send: t.fail}, function(err) {
+  middleware({}, {})(req, {send: t.fail}, function(err) {
     t.ok(err, 'Returns and error');
     t.equal(err.statusCode, 400, 'Error has a statusCode of 400');
     t.end();
