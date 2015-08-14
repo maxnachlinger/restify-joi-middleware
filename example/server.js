@@ -41,14 +41,15 @@ module.exports = function () {
 
   server.put({
     path: '/:id',
-    validation: {
+    validation: Joi.object().keys({
       params: {
         id: Joi.number().min(0).required()
       },
       body: {
+        id: Joi.number().min(0).required(),
         name: Joi.string().required()
       }
-    }
+    }).assert('params.id', Joi.ref('body.id'))
   }, function (req, res, next) {
     res.send(200, {id: 1, name: req.body.name});
     next();

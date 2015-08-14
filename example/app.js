@@ -51,5 +51,5 @@ function testPost(cb) {
 }
 
 function testPut(cb) {
-  client.put('/1', {name: 0}, ignoreValidationError(cb));
+  client.put('/1', {id: 2, name: 'test'}, ignoreValidationError(cb));
 }

@@ -48,20 +48,20 @@ server.post({
 });
 
 server.put({
- path: '/:id',
- // Joi.object().keys({}) schemas work too
- validation: Joi.object().keys({
-   params: {
-     id: Joi.number().min(0).required()
-   },
-   body: {
-     id: Joi.number().min(0).required()
-     name: Joi.string().required()
-   }
- }).assert('params.id', Joi.ref('body.id'))
+  path: '/:id',
+  // Joi.object().keys({}) schemas work too
+  validation: Joi.object().keys({
+    params: {
+      id: Joi.number().min(0).required()
+    },
+    body: {
+      id: Joi.number().min(0).required(),
+      name: Joi.string().required()
+    }
+  }).assert('params.id', Joi.ref('body.id'))
 }, function (req, res, next) {
- res.send(200, {id: 1, name: req.body.name});
- next();
+  res.send(200, {id: 1, name: req.body.name});
+  next();
 });
 ```
 
