@@ -19,11 +19,7 @@ var validator = require('restify-joi-middleware');
 var server = restify.createServer();
 
 // you can pass along all the joi options here
-server.use(validator({
-  convert: true,
-  allowUnknown: true,
-  abortEarly: false
-}));
+server.use(validator());
 
 // additional middleware etc
 
