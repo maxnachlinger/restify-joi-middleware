@@ -1,8 +1,8 @@
+var util = require('util');
 var restify = require('restify');
 var async = require('async');
 
 var server = require('./server');
-
 var port = 8080;
 
 var client = restify.createJsonClient({
@@ -10,7 +10,7 @@ var client = restify.createJsonClient({
   version: '*'
 });
 
-server().listen(8080, function (err) {
+server().listen(port, function (err) {
   if (err) {
     return onError(err);
   }
@@ -23,7 +23,7 @@ server().listen(8080, function (err) {
     if (err) {
       return onError(err);
     }
-    console.log("Results:", results);
+    console.log("Results:", util.inspect(results, {depth: null}));
     process.exit(0);
   });
 });
