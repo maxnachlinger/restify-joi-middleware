@@ -21,7 +21,7 @@ module.exports = function (joiOptions, options) {
 
   options.keysToValidate = options.keysToValidate || ['params', 'body', 'query', 'user', 'headers', 'trailers'];
 
-  return function middleware(req, res, next) {
+  return function restifyJoiMiddleware(req, res, next) {
     var validation = req.route.validation;
 
     if (!validation) {
