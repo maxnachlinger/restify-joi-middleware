@@ -1,10 +1,11 @@
-var test = require('tape');
-var Joi = require('joi');
-var middleware = require('../');
+'use strict';
+const test = require('tape');
+const Joi = require('joi');
+const middleware = require('../');
 
 test('when the allowUnknown option is set, validation works with additional req.params for which no ' +
-  'validation is defined', function (t) {
-  var req = {
+  'validation is defined', t => {
+  const req = {
     params: {
       id: 1,
       name: 'Test'
@@ -18,15 +19,15 @@ test('when the allowUnknown option is set, validation works with additional req.
     }
   };
 
-  middleware({allowUnknown: true})(req, {send: t.fail}, function(err) {
+  middleware({allowUnknown: true})(req, {send: t.fail}, err => {
     t.notOk(err, 'No error should be returned');
     t.end();
   });
 });
 
 test('when the allowUnknown option is not set, validation fails with additional req.params for which no ' +
-  'validation is defined', function (t) {
-  var req = {
+  'validation is defined', t => {
+  const req = {
     params: {
       id: 1,
       name: 'Test'
@@ -40,15 +41,15 @@ test('when the allowUnknown option is not set, validation fails with additional 
     }
   };
 
-  middleware({}, {})(req, {send: t.fail}, function(err) {
+  middleware({}, {})(req, {send: t.fail}, err => {
     t.ok(err, 'Returns and error');
     t.equal(err.statusCode, 400, 'Error has a statusCode of 400');
     t.end();
   });
 });
 
-test('validation writes back converted values when the convert option is set', function (t) {
-  var req = {
+test('validation writes back converted values when the convert option is set', t => {
+  const req = {
     params: {
       id: '2'
     },
@@ -60,7 +61,7 @@ test('validation writes back converted values when the convert option is set', f
       }
     }
   };
-  middleware({convert: true})(req, {send: t.fail}, function(err) {
+  middleware({convert: true})(req, {send: t.fail}, err => {
     t.notOk(err, 'No error should be returned');
     t.equal(typeof req.params.id, 'number', 'params.id was converted to a number');
     t.end();
@@ -68,8 +69,8 @@ test('validation writes back converted values when the convert option is set', f
 });
 
 test('validation preserves additional values present in the input when the convert and allowUnknown options ' +
-  'are set', function (t) {
-  var req = {
+  'are set', t => {
+  const req = {
     params: {
       id: '2',
       name: 'Test'
@@ -82,7 +83,7 @@ test('validation preserves additional values present in the input when the conve
       }
     }
   };
-  middleware({convert: true, allowUnknown: true})(req, {send: t.fail}, function(err) {
+  middleware({convert: true, allowUnknown: true})(req, {send: t.fail}, err => {
     t.notOk(err, 'No error should be returned');
     t.ok(req.params.name, 'Additional value was preserved');
     t.end();

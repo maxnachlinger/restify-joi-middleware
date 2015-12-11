@@ -1,14 +1,15 @@
-var test = require('tape');
-var Joi = require('joi');
-var restify = require('restify');
-var middleware = require('../');
+'use strict';
+const test = require('tape');
+const Joi = require('joi');
+const restify = require('restify');
+const middleware = require('../');
 
-test('options.errorTransformer transforms errors', function (t) {
-  var transformer = function (validationInput, joiError) {
+test('options.errorTransformer transforms errors', t => {
+  const transformer = (validationInput, joiError) => {
     return new restify.errors.BadRequestError('Test');
   };
 
-  var req = {
+  const req = {
     params: {
       id: 'test'
     },
@@ -21,20 +22,20 @@ test('options.errorTransformer transforms errors', function (t) {
     }
   };
 
-  middleware({allowUnknown: true}, {errorTransformer: transformer})(req, {send: t.fail}, function(err) {
+  middleware({allowUnknown: true}, {errorTransformer: transformer})(req, {send: t.fail}, err => {
     t.ok(err, 'An error should be returned');
     t.equal(err.message, 'Test', 'Error was transformed');
     t.end();
   });
 });
 
-test('options.errorResponder alters how the middleware responds to errors', function (t) {
-  var responder = function (transformedErr, req, res, next) {
+test('options.errorResponder alters how the middleware responds to errors', t => {
+  const responder = (transformedErr, req, res, next) => {
     res.send(200, "Test");
     return next();
   };
 
-  var req = {
+  const req = {
     params: {
       id: 'test'
     },
@@ -47,10 +48,12 @@ test('options.errorResponder alters how the middleware responds to errors', func
     }
   };
 
-  middleware({allowUnknown: true}, {errorResponder: responder})(req, {send: function(code, body) {
-    t.equal(code, 200, 'Response was altered');
-    t.equal(body, 'Test', 'Response was altered');
-  }}, function(err) {
+  middleware({allowUnknown: true}, {errorResponder: responder})(req, {
+    send: (code, body) => {
+      t.equal(code, 200, 'Response was altered');
+      t.equal(body, 'Test', 'Response was altered');
+    }
+  }, err => {
     t.notOk(err, 'No error should be returned');
     t.end();
   });

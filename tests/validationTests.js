@@ -1,9 +1,10 @@
-var test = require('tape');
-var Joi = require('joi');
-var middleware = require('../');
+'use strict';
+const test = require('tape');
+const Joi = require('joi');
+const middleware = require('../');
 
-test("validation errors on invalid input", function (t) {
-  var req = {
+test("validation errors on invalid input", t => {
+  const req = {
     params: {
       id: 'this-is-a-string'
     },
@@ -16,15 +17,15 @@ test("validation errors on invalid input", function (t) {
     }
   };
 
-  middleware()(req, {send: t.fail}, function (err) {
+  middleware()(req, {send: t.fail}, err => {
     t.ok(err, 'Returns and error');
     t.equal(err.statusCode, 400, 'Error has a statusCode of 400');
     t.end();
   });
 });
 
-test("validation allows valid input", function (t) {
-  var req = {
+test("validation allows valid input", t => {
+  const req = {
     params: {
       id: 1
     },
@@ -37,15 +38,15 @@ test("validation allows valid input", function (t) {
     }
   };
 
-  middleware()(req, {send: t.fail}, function (err) {
+  middleware()(req, {send: t.fail}, err => {
     t.notOk(err, 'No error should be returned');
     t.end();
   });
 });
 
-test("validation blocks missing input", function (t) {
+test("validation blocks missing input", t => {
   // notice there's no req.params
-  var req = {
+  const req = {
     route: {
       validation: {
         params: {
@@ -55,15 +56,15 @@ test("validation blocks missing input", function (t) {
     }
   };
 
-  middleware()(req, {send: t.fail}, function (err) {
+  middleware()(req, {send: t.fail}, err => {
     t.ok(err, 'Returns and error');
     t.equal(err.statusCode, 400, 'Error has a statusCode of 400');
     t.end();
   });
 });
 
-test("allows Joi.object().keys validations", function (t) {
-  var req = {
+test("allows Joi.object().keys validations", t => {
+  const req = {
     body: {
       id: 1
     },
@@ -82,14 +83,14 @@ test("allows Joi.object().keys validations", function (t) {
     }
   };
 
-  middleware()(req, {send: t.fail}, function (err) {
+  middleware()(req, {send: t.fail}, err => {
     t.notOk(err, 'No error should be returned');
     t.end();
   });
 });
 
-test("fails on bad input via Joi.object().keys validations", function (t) {
-  var req = {
+test("fails on bad input via Joi.object().keys validations", t => {
+  const req = {
     body: {
       id: 1
     },
@@ -108,7 +109,7 @@ test("fails on bad input via Joi.object().keys validations", function (t) {
     }
   };
 
-  middleware()(req, {send: t.fail}, function (err) {
+  middleware()(req, {send: t.fail}, err => {
     t.ok(err, 'Returns and error');
     t.equal(err.statusCode, 400, 'Error has a statusCode of 400');
     t.end();

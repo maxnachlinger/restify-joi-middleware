@@ -1,11 +1,11 @@
-var Joi = require('joi');
-var restify = require('restify');
-var validator = require('../');
+const Joi = require('joi');
+const restify = require('restify');
+const validator = require('../');
 
 module.exports = function () {
-  var server = restify.createServer();
+  const server = restify.createServer();
 
-  server.on('uncaughtException', function (req, res, route, err) {
+  server.on('uncaughtException', (req, res, route, err) => {
     console.log('uncaughtException', err.stack);
   });
 
@@ -22,7 +22,7 @@ module.exports = function () {
         id: Joi.number().min(0).required()
       }
     }
-  }, function (req, res, next) {
+  }, (req, res, next) => {
     res.send(200, {id: req.params.id});
     next();
   });
@@ -34,7 +34,7 @@ module.exports = function () {
         name: Joi.string().required()
       }
     }
-  }, function (req, res, next) {
+  }, (req, res, next) => {
     res.send(201, {id: 1, name: req.body.name});
     next();
   });
@@ -50,7 +50,7 @@ module.exports = function () {
         name: Joi.string().required()
       }
     }).assert('params.id', Joi.ref('body.id'))
-  }, function (req, res, next) {
+  }, (req, res, next) => {
     res.send(200, {id: 1, name: req.body.name});
     next();
   });

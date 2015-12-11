@@ -6,6 +6,10 @@
   "scripts": {
     "start": "node app.js"
   },
+  "engineStrict": true,
+  "engines": {
+    "node": ">4.0.0"
+  },
   "author": "Max Nachlinger <max@somewhere.com>",
   "license": "ISC",
   "dependencies": {

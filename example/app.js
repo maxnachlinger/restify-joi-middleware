@@ -1,25 +1,32 @@
-var util = require('util');
-var restify = require('restify');
-var async = require('async');
+'use strict';
+const util = require('util');
+const restify = require('restify');
+const async = require('async');
 
-var server = require('./server');
-var port = 8080;
+const server = require('./server');
+const port = 8080;
 
-var client = restify.createJsonClient({
+const client = restify.createJsonClient({
   url: 'http://localhost:' + port,
   version: '*'
 });
 
-server().listen(port, function (err) {
+server().listen(port, err => {
   if (err) {
     return onError(err);
   }
 
   async.series({
-    GET: testGet,
-    POST: testPost,
-    PUT: testPut
-  }, function (err, results) {
+    GET: cb => {
+      return client.get('/test-string', ignoreValidationError(cb));
+    },
+    POST: cb => {
+      return client.post('/', {name: 0}, ignoreValidationError(cb));
+    },
+    PUT: cb => {
+      client.put('/1', {id: 2, name: 'test'}, ignoreValidationError(cb));
+    }
+  }, (err, results) => {
     if (err) {
       return onError(err);
     }
@@ -40,16 +47,4 @@ function ignoreValidationError(cb) {
     }
     return cb(null, obj);
   };
-}
-
-function testGet(cb) {
-  client.get('/test-string', ignoreValidationError(cb));
-}
-
-function testPost(cb) {
-  client.post('/', {name: 0}, ignoreValidationError(cb));
-}
-
-function testPut(cb) {
-  client.put('/1', {id: 2, name: 'test'}, ignoreValidationError(cb));
 }

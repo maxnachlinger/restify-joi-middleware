@@ -9,14 +9,18 @@ Another [joi](https://github.com/hapijs/joi) validation middleware for restify. 
 ```
 npm install restify-joi-middleware --save
 ```
+
+### Note:
+Version ``1.0.0`` is for Node versions ``>4.0.0``. If you are using Node ``0.10 - 0.12``, please use version ``0.0.9``.
+
 ### Usage:
 You can also have a look at the [example](example/).
 ```javascript
-var Joi = require('joi');
-var restify = require('restify');
-var validator = require('restify-joi-middleware');
+const Joi = require('joi');
+const restify = require('restify');
+const validator = require('restify-joi-middleware');
 
-var server = restify.createServer();
+const server = restify.createServer();
 
 // you can pass along all the joi options here
 server.use(validator());
@@ -30,7 +34,7 @@ server.get({
       id: Joi.number().min(0).required()
     }
   }
-}, function (req, res, next) {
+}, (req, res, next) => {
   res.send(200, {id: req.params.id});
   next();
 });
@@ -42,7 +46,7 @@ server.post({
       name: Joi.string().required()
     }
   }
-}, function (req, res, next) {
+}, (req, res, next) => {
   res.send(201, {id: 1, name: req.body.name});
   next();
 });
@@ -59,7 +63,7 @@ server.put({
       name: Joi.string().required()
     }
   }).assert('params.id', Joi.ref('body.id'))
-}, function (req, res, next) {
+}, (req, res, next) => {
   res.send(200, {id: 1, name: req.body.name});
   next();
 });
@@ -99,12 +103,12 @@ server.use(validator({
   keysToValidate: ['params', 'body', 'query', 'user', 'headers', 'trailers'],
   
   // changes how joi errors are transformed to be returned
-  errorTransformer: function (validationInput, joiError) {
+  errorTransformer: (validationInput, joiError) => {
       return new restify.errors.BadRequestError(joiError.message);
   },
   
   // changes how errors are returned
-  errorResponder: function (transformedErr, req, res, next) {
+  errorResponder: (transformedErr, req, res, next) => {
     res.send(400, transformedErr);
     return next();
   }
