@@ -1,12 +1,12 @@
 'use strict';
 const test = require('tape');
 const Joi = require('joi');
-const restify = require('restify');
+const errors = require('restify-errors');
 const middleware = require('../');
 
 test('options.errorTransformer transforms errors', t => {
   const transformer = (validationInput, joiError) => {
-    return new restify.errors.BadRequestError('Test');
+    return new errors.BadRequestError('Test');
   };
 
   const req = {
