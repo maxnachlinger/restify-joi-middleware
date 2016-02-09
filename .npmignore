@@ -2,3 +2,5 @@
 example
 *.iml
 tests
+.travis.yml
+.npmignore
