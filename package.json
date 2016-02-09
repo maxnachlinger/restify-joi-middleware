@@ -1,6 +1,6 @@
 {
   "name": "restify-joi-middleware",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple joi middleware for restify.",
   "main": "index.js",
   "scripts": {
@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/maxnachlinger/restify-joi-middleware#readme",
   "dependencies": {
-    "joi": "^6.6.0",
-    "restify": "^3.0.3"
+    "joi": "^7.2.3",
+    "restify-errors": "^4.1.0"
   },
   "devDependencies": {
     "tape": "^4.0.1"

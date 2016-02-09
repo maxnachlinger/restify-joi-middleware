@@ -1,9 +1,9 @@
 'use strict';
-const restify = require('restify');
+const errors = require('restify-errors');
 const Joi = require('joi');
 
 const defaultErrorTransformer = (validationInput, joiError) => {
-  var retError = new restify.errors.BadRequestError();
+  var retError = new errors.BadRequestError();
   retError.body.data = joiError.details;
   return retError;
 };

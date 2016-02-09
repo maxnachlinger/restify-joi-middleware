@@ -13,8 +13,8 @@
   "author": "Max Nachlinger <max@somewhere.com>",
   "license": "ISC",
   "dependencies": {
-    "async": "^1.4.0",
-    "joi": "^6.6.0",
-    "restify": "^3.0.3"
+    "async": "^1.5.2",
+    "joi": "^7.2.3",
+    "restify": "^4.0.3"
   }
 }
