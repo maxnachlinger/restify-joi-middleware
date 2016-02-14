@@ -16,14 +16,14 @@ Version ``1.0.0`` is for Node versions ``>4.0.0``. If you are using Node ``0.10 
 ### Usage:
 You can also have a look at the [example](example/).
 ```javascript
-const Joi = require('joi');
-const restify = require('restify');
-const validator = require('restify-joi-middleware');
+const Joi = require('joi')
+const restify = require('restify')
+const validator = require('restify-joi-middleware')
 
-const server = restify.createServer();
+const server = restify.createServer()
 
 // you can pass along all the joi options here
-server.use(validator());
+server.use(validator())
 
 // additional middleware etc
 
@@ -35,9 +35,9 @@ server.get({
     }
   }
 }, (req, res, next) => {
-  res.send(200, {id: req.params.id});
-  next();
-});
+  res.send(200, {id: req.params.id})
+  next()
+})
 
 server.post({
   path: '/',
@@ -47,9 +47,9 @@ server.post({
     }
   }
 }, (req, res, next) => {
-  res.send(201, {id: 1, name: req.body.name});
-  next();
-});
+  res.send(201, {id: 1, name: req.body.name})
+  next()
+})
 
 server.put({
   path: '/:id',
@@ -64,8 +64,8 @@ server.put({
     }
   }).assert('params.id', Joi.ref('body.id'))
 }, (req, res, next) => {
-  res.send(200, {id: 1, name: req.body.name});
-  next();
+  res.send(200, {id: 1, name: req.body.name})
+  next()
 });
 ```
 
@@ -103,14 +103,12 @@ server.use(validator({
   keysToValidate: ['params', 'body', 'query', 'user', 'headers', 'trailers'],
   
   // changes how joi errors are transformed to be returned
-  errorTransformer: (validationInput, joiError) => {
-      return new restify.errors.BadRequestError(joiError.message);
-  },
+  errorTransformer: (validationInput, joiError) => new restifyErrors.BadRequestError(joiError.message),
   
   // changes how errors are returned
   errorResponder: (transformedErr, req, res, next) => {
-    res.send(400, transformedErr);
-    return next();
+    res.send(400, transformedErr)
+    return next()
   }
 });
 ```
