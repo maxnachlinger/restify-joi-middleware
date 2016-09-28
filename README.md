@@ -1,9 +1,13 @@
 # restify-joi-middleware
 Another [joi](https://github.com/hapijs/joi) validation middleware for restify. Inspired by [restify-joi-validator](https://github.com/markotom/restify-joi-validator)
 
-[![Build Status](https://travis-ci.org/maxnachlinger/restify-joi-middleware.svg?branch=master)](https://travis-ci.org/maxnachlinger/restify-joi-middleware)
+[![travis][travis-image]][travis-url]
+[![npm][npm-image]][npm-url]
 
-[![NPM](https://nodei.co/npm/restify-joi-middleware.png)](https://nodei.co/npm/restify-joi-middleware/)
+[travis-image]: https://travis-ci.org/maxnachlinger/restify-joi-middleware.svg?branch=master
+[travis-url]: https://travis-ci.org/maxnachlinger/restify-joi-middleware
+[npm-image]: https://img.shields.io/npm/v/restify-joi-middleware.svg?style=flat
+[npm-url]: https://npmjs.org/package/restify-joi-middleware
 
 ### Installation:
 ```
