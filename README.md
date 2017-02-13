@@ -104,7 +104,7 @@ server.use(validator({
   // .. all additional joi options
 }, {
   // changes the request keys validated
-  keysToValidate: ['params', 'body', 'query', 'user', 'headers', 'trailers'],
+  keysToValidate: ['params', 'body', 'query', 'user', 'headers', 'trailers', 'files'],
   
   // changes how joi errors are transformed to be returned
   errorTransformer: (validationInput, joiError) => new restifyErrors.BadRequestError(joiError.message),

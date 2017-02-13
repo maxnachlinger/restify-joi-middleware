@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/maxnachlinger/restify-joi-middleware#readme",
   "dependencies": {
-    "joi": "^10.2.0",
+    "joi": "^10.2.2",
     "restify-errors": "^4.3.0"
   },
   "devDependencies": {

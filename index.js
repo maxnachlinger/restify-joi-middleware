@@ -12,7 +12,7 @@ const defaultErrorResponder =  (transformedErr, req, res, next) => {
   return next(transformedErr);
 };
 
-const defaultKeysToValidate = ['params', 'body', 'query', 'user', 'headers', 'trailers'];
+const defaultKeysToValidate = ['params', 'body', 'query', 'user', 'headers', 'trailers', 'files'];
 
 module.exports = function (joiOptions, options) {
   joiOptions = joiOptions || {
