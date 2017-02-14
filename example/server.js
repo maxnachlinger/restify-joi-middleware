@@ -1,19 +1,19 @@
-const Joi = require('joi');
-const restify = require('restify');
-const validator = require('../');
+const Joi = require('joi')
+const restify = require('restify')
+const validator = require('../')
 
 module.exports = function () {
-  const server = restify.createServer();
+  const server = restify.createServer()
 
   server.on('uncaughtException', (req, res, route, err) => {
-    console.log('uncaughtException', err.stack);
-  });
+    console.log('uncaughtException', err.stack)
+  })
 
-  server.use(restify.acceptParser(server.acceptable));
-  server.use(restify.queryParser());
-  server.use(restify.bodyParser({mapParams: false}));
-  server.use(restify.gzipResponse());
-  server.use(validator());
+  server.use(restify.acceptParser(server.acceptable))
+  server.use(restify.queryParser())
+  server.use(restify.bodyParser({mapParams: false}))
+  server.use(restify.gzipResponse())
+  server.use(validator())
 
   server.get({
     path: '/:id',
@@ -23,9 +23,9 @@ module.exports = function () {
       }
     }
   }, (req, res, next) => {
-    res.send(200, {id: req.params.id});
-    next();
-  });
+    res.send(200, {id: req.params.id})
+    next()
+  })
 
   server.post({
     path: '/',
@@ -35,9 +35,9 @@ module.exports = function () {
       }
     }
   }, (req, res, next) => {
-    res.send(201, {id: 1, name: req.body.name});
-    next();
-  });
+    res.send(201, {id: 1, name: req.body.name})
+    next()
+  })
 
   server.put({
     path: '/:id',
@@ -51,9 +51,9 @@ module.exports = function () {
       }
     }).assert('params.id', Joi.ref('body.id'))
   }, (req, res, next) => {
-    res.send(200, {id: 1, name: req.body.name});
-    next();
-  });
+    res.send(200, {id: 1, name: req.body.name})
+    next()
+  })
 
-  return server;
-};
+  return server
+}

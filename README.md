@@ -70,7 +70,7 @@ server.put({
 }, (req, res, next) => {
   res.send(200, {id: 1, name: req.body.name})
   next()
-});
+})
 ```
 
 ### Quick Example
@@ -114,5 +114,5 @@ server.use(validator({
     res.send(400, transformedErr)
     return next()
   }
-});
+})
 ```
