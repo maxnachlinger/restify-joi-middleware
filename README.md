@@ -14,11 +14,11 @@ Another [joi](https://github.com/hapijs/joi) validation middleware for restify. 
 
 ### Installation:
 ```
-npm install restify-joi-middleware --save
+npm i restify-joi-middleware --save
 ```
 
 ### Note:
-Version ``1.0.0`` is for Node versions ``>4.0.0``. If you are using Node ``0.10 - 0.12``, please use version ``0.0.9``.
+Requires Node ``>4.0.0``.
 
 ### Usage:
 You can also have a look at the [example](example/).
