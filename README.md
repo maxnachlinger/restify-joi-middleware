@@ -1,6 +1,7 @@
 # restify-joi-middleware
 Another [joi](https://github.com/hapijs/joi) validation middleware for restify. Inspired by [restify-joi-validator](https://github.com/markotom/restify-joi-validator)
 
+[![standard][standard-image]][standard-url]
 [![travis][travis-image]][travis-url]
 [![npm][npm-image]][npm-url]
 
@@ -8,6 +9,8 @@ Another [joi](https://github.com/hapijs/joi) validation middleware for restify. 
 [travis-url]: https://travis-ci.org/maxnachlinger/restify-joi-middleware
 [npm-image]: https://img.shields.io/npm/v/restify-joi-middleware.svg?style=flat
 [npm-url]: https://npmjs.org/package/restify-joi-middleware
+[standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[standard-url]: http://standardjs.com/
 
 ### Installation:
 ```
