@@ -58,4 +58,3 @@ test('options.errorResponder alters how the middleware responds to errors', t =>
     t.end()
   })
 })
-
