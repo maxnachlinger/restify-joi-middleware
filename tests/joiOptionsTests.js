@@ -89,3 +89,5 @@ test('validation preserves additional values present in the input when the conve
     t.end()
   })
 })
+
+test(`afterTests`, t => setTimeout(() => t.end(), 1000))

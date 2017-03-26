@@ -5,7 +5,7 @@ const errors = require('restify-errors')
 const middleware = require('../')
 
 test('options.errorTransformer transforms errors', t => {
-  const transformer = (validationInput, joiError) => {
+  const transformer = () => {
     return new errors.BadRequestError('Test')
   }
 
@@ -58,3 +58,5 @@ test('options.errorResponder alters how the middleware responds to errors', t =>
     t.end()
   })
 })
+
+test(`afterTests`, t => setTimeout(() => t.end(), 1000))

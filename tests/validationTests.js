@@ -29,3 +29,5 @@ test('fails on bad input via Joi.object().keys validations', t => {
     t.end()
   })
 })
+
+test(`afterTests`, t => setTimeout(() => t.end(), 1000))
