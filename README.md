@@ -20,8 +20,7 @@ npm i restify-joi-middleware --save
 ### Note:
 Requires Node ``>4.0.0``.
 
-### Usage:
-You can also have a look at the [example](example/).
+### Example:
 ```javascript
 const Joi = require('joi')
 const restify = require('restify')
