@@ -27,7 +27,10 @@ const Joi = require('joi')
 const restify = require('restify')
 const validator = require('restify-joi-middleware')
 
-const server = restify.createServer()
+const server = restify.createServer();
+server.use(restify.queryParser());
+server.use(restify.gzipResponse());
+server.use(restify.bodyParser());
 
 // you can pass along all the joi options here
 server.use(validator())
