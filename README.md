@@ -41,9 +41,9 @@ server.use(validator())
 server.get({
   path: '/:id',
   validation: {
-    params: {
+    params: Joi.object().keys({
       id: Joi.number().min(0).required()
-    }
+    }).required()
   }
 }, (req, res, next) => {
   res.send(200, {id: req.params.id})
@@ -53,12 +53,12 @@ server.get({
 server.post({
   path: '/',
   validation: {
-    body: {
+    body: Joi.object().keys({
       name: Joi.string().required()
-    }
+    }).required()
   }
 }, (req, res, next) => {
-  res.send(201, {id: 1, name: req.body.name})
+  res.send(201, { id: 1, name: req.body.name })
   next()
 })
 
@@ -66,13 +66,13 @@ server.put({
   path: '/:id',
   // Joi.object().keys({}) schemas work too
   validation: Joi.object().keys({
-    params: {
+    params: Joi.object().keys({
       id: Joi.number().min(0).required()
-    },
-    body: {
+    }).required(),
+    body: params: Joi.object().keys({
       id: Joi.number().min(0).required(),
       name: Joi.string().required()
-    }
+    }).required()
   }).assert('params.id', Joi.ref('body.id'))
 }, (req, res, next) => {
   res.send(200, {id: 1, name: req.body.name})
