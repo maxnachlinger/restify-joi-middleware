@@ -1,6 +1,7 @@
 .idea
-example
 *.iml
 tests
+example
 .travis.yml
 .npmignore
+.gitignore

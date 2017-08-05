@@ -21,16 +21,18 @@ npm i restify-joi-middleware --save
 Requires Node ``>4.0.0``.
 
 ### Example:
+This example is [available here as well](./example/server.js).
 ```javascript
 const Joi = require('joi')
 const restify = require('restify')
+const {name, version} = require('./package.json')
 const validator = require('restify-joi-middleware')
 
-const server = restify.createServer();
-server.use(restify.acceptParser(server.acceptable))
-server.use(restify.queryParser())
-server.use(restify.bodyParser({mapParams: false}))
-server.use(restify.gzipResponse())
+const server = restify.createServer({name, version})
+server.use(restify.plugins.acceptParser(server.acceptable))
+server.use(restify.plugins.queryParser())
+server.use(restify.plugins.bodyParser({mapParams: false}))
+server.use(restify.plugins.gzipResponse())
 
 // you can pass along all the joi options here
 server.use(validator())
@@ -57,7 +59,7 @@ server.post({
     }).required()
   }
 }, (req, res, next) => {
-  res.send(201, { id: 1, name: req.body.name })
+  res.send(201, {id: 1, name: req.body.name})
   next()
 })
 
@@ -68,7 +70,7 @@ server.put({
     params: Joi.object().keys({
       id: Joi.number().min(0).required()
     }).required(),
-    body: params: Joi.object().keys({
+    body: Joi.object().keys({
       id: Joi.number().min(0).required(),
       name: Joi.string().required()
     }).required()
@@ -77,26 +79,18 @@ server.put({
   res.send(200, {id: 1, name: req.body.name})
   next()
 })
+
+server.listen(8080, () => console.log(`${server.name} listening on: ${server.url}`))
 ```
 
 ### Quick Example
 Given the server above:
 ```sh
-curl 'http://localhost:8081/'
+curl 'http://localhost:8080/'
 # result
 {
-   "code":"BadRequestError",
-   "message":"",
-   "data":[
-      {
-         "message":"\"id\" must be a number",
-         "path":"params.id",
-         "type":"number.base",
-         "context":{
-            "key":"id"
-         }
-      }
-   ]
+  "code": "BadRequest",
+  "message": "child \"params\" fails because [child \"id\" fails because [\"id\" must be a number]]"
 }
 ```
 
@@ -112,8 +106,8 @@ server.use(validator({
   // changes the request keys validated
   keysToValidate: ['params', 'body', 'query', 'user', 'headers', 'trailers', 'files'],
   
-  // changes how joi errors are transformed to be returned
-  errorTransformer: (validationInput, joiError) => new restifyErrors.BadRequestError(joiError.message),
+  // changes how joi errors are transformed to be returned - no details are returned in this case
+  errorTransformer: (validationInput, joiError) => new restifyErrors.BadRequestError(),
   
   // changes how errors are returned
   errorResponder: (transformedErr, req, res, next) => {

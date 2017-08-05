@@ -5,9 +5,7 @@ const errors = require('restify-errors')
 const middleware = require('../')
 
 test('options.errorTransformer transforms errors', t => {
-  const transformer = () => {
-    return new errors.BadRequestError('Test')
-  }
+  const transformer = () => new errors.BadRequestError('Test')
 
   const req = {
     params: {
