@@ -4,6 +4,7 @@ const joi = require('joi')
 
 const defaultErrorTransformer = (validationInput, joiError) => {
   const retError = new errors.BadRequestError()
+  retError.body.message = joiError.message
   retError.body.data = joiError.details
   return retError
 }
@@ -46,7 +47,7 @@ const middleware = (joiOptions, options) => (req, res, next) => {
     )
   }
 
-// write defaults back to request
+  // write defaults back to request
   options.keysToValidate.forEach(key => {
     if (!result.value[key] || !req[key]) {
       return
@@ -57,7 +58,7 @@ const middleware = (joiOptions, options) => (req, res, next) => {
   next()
 }
 
-module.exports = function (joiOptions, options) {
+module.exports = (joiOptions, options) => {
   const localJoiOptions = joiOptions || {
     convert: true,
     allowUnknown: false,

@@ -1,0 +1,14 @@
+{
+  "name": "restify-joi-middleware-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "private": true,
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "restify": "5.0.1"
+  }
+}
