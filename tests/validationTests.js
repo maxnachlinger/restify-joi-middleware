@@ -24,10 +24,40 @@ test('fails on bad input via Joi.object().keys validations', t => {
   }
 
   middleware()(req, {send: t.fail}, err => {
-    t.ok(err, 'Returns and error')
+    t.ok(err, 'Returns an error')
     t.equal(err.statusCode, 400, 'Error has a statusCode of 400')
     t.end()
   })
 })
 
-test(`afterTests`, t => setTimeout(() => t.end(), 1000))
+test('passes on valid request with params and body', t => {
+  const req = {
+    body: {
+      payload: {
+        email: 'test@test.com',
+        password: 'test-password'
+      }
+    },
+    params: {
+      registration_token: 'test-token'
+    },
+    route: {
+      validation: Joi.object().keys({
+        params: Joi.object().keys({
+          registration_token: Joi.string()
+        }).required(),
+        body: Joi.object().keys({
+          payload: Joi.object().keys({
+            email: Joi.string().email().required(),
+            password: Joi.string().min(6).max(15).required()
+          }).required()
+        }).required()
+      })
+    }
+  }
+
+  middleware()(req, {send: t.fail}, (err) => {
+    t.notOk(err, 'No error should be returned')
+    t.end()
+  })
+})
