@@ -9,9 +9,7 @@ const defaultErrorTransformer = (validationInput, joiError) => {
   return retError
 }
 
-const defaultErrorResponder = (transformedErr, req, res, next) => {
-  return next(transformedErr)
-}
+const defaultErrorResponder = (transformedErr, req, res, next) => next(transformedErr)
 
 const defaultKeysToValidate = ['params', 'body', 'query', 'user', 'headers', 'trailers', 'files']
 

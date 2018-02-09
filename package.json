@@ -9,7 +9,7 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": ">4.0.0"
+    "node": ">8.0.0"
   },
   "repository": {
     "type": "git",
@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/maxnachlinger/restify-joi-middleware#readme",
   "dependencies": {
-    "joi": "11.3.4",
-    "restify-errors": "5.0.0"
+    "joi": "^13.1.2",
+    "restify-errors": "^5.0.0"
   },
   "devDependencies": {
     "snazzy": "6.0.0",
