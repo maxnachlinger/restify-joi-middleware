@@ -26,7 +26,7 @@
     "restify-errors": "^6.0.0"
   },
   "devDependencies": {
-    "snazzy": "6.0.0",
+    "snazzy": "7.1.0",
     "standard": "10.0.3",
     "tape": "4.8.0"
   }
