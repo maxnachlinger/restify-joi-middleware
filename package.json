@@ -28,6 +28,6 @@
   "devDependencies": {
     "snazzy": "7.1.1",
     "standard": "10.0.3",
-    "tape": "4.8.0"
+    "tape": "4.9.0"
   }
 }
