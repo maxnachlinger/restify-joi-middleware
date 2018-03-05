@@ -15,6 +15,9 @@ const defaultKeysToValidate = ['params', 'body', 'query', 'user', 'headers', 'tr
 
 const middleware = (joiOptions, options) => (req, res, next) => {
   const validation = req.route.validation
+  const errorResponder = typeof req.route.errorResponder === 'function'
+    ? req.route.errorResponder
+    : undefined
 
   if (!validation) {
     return setImmediate(next)
@@ -39,10 +42,15 @@ const middleware = (joiOptions, options) => (req, res, next) => {
   const result = joi.validate(toValidate, validation, joiOptions)
 
   if (result.error) {
-    return options.errorResponder(
-      options.errorTransformer(toValidate, result.error),
-      req, res, next
-    )
+    return (errorResponder)
+      ? errorResponder(
+        options.errorTransformer(toValidate, result.error),
+        req, res, next
+      )
+      : options.errorResponder(
+        options.errorTransformer(toValidate, result.error),
+        req, res, next
+      )
   }
 
   // write defaults back to request
