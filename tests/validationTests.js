@@ -61,3 +61,37 @@ test('passes on valid request with params and body', t => {
     t.end()
   })
 })
+
+test('handles v7 route definitions', t => {
+  const req = {
+    body: {
+      payload: {
+        email: 'test@test.com',
+        password: 'test-password'
+      }
+    },
+    params: {
+      registration_token: 'test-token'
+    },
+    route: {
+      spec: {
+        validation: Joi.object().keys({
+          params: Joi.object().keys({
+            registration_token: Joi.string()
+          }).required(),
+          body: Joi.object().keys({
+            payload: Joi.object().keys({
+              email: Joi.string().email().required(),
+              password: Joi.string().min(6).max(15).required()
+            }).required()
+          }).required()
+        })
+      }
+    }
+  }
+
+  middleware()(req, {send: t.fail}, (err) => {
+    t.notOk(err, 'No error should be returned')
+    t.end()
+  })
+})
