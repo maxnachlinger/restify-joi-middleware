@@ -89,3 +89,28 @@ test('validation preserves additional values present in the input when the conve
     t.end()
   })
 })
+
+test('when the route.joiOptions option is set, validation ignore options main ' +
+  'for which validation is defined', t => {
+  const req = {
+    params: {
+      id: '2',
+      name: 'Test'
+    },
+    route: {
+      joiOpts: {
+        allowUnknown: false
+      },
+      validation: {
+        params: {
+          id: Joi.number().required()
+        }
+      }
+    }
+  }
+  middleware({allowUnknown: true})(req, {send: t.fail}, err => {
+    t.ok(err, 'Returns and error')
+    t.equal(err.statusCode, 400, 'Error has a statusCode of 400')
+    t.end()
+  })
+})

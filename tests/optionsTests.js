@@ -56,3 +56,31 @@ test('options.errorResponder alters how the middleware responds to errors', t =>
     t.end()
   })
 })
+
+test('route.errorResponder allows define transformation of the error in ' +
+  'the response middleware', t => {
+  const responder = (transformedErr, req, res, next) => {
+    req.errorResponder = transformedErr
+    return next()
+  }
+
+  const req = {
+    params: {
+      id: 'test'
+    },
+    route: {
+      validation: {
+        params: {
+          id: Joi.number().required()
+        }
+      },
+      errorResponder: responder
+    }
+  }
+
+  middleware({allowUnknown: true}, {})(req, {}, () => {})
+
+  t.ok(req.errorResponder, 'An error should be returned')
+  t.equal(req.errorResponder.statusCode, 400, 'Error has a statusCode of 400')
+  t.end()
+})
