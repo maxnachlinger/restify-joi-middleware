@@ -14,7 +14,9 @@ const defaultErrorResponder = (transformedErr, req, res, next) => next(transform
 const defaultKeysToValidate = ['params', 'body', 'query', 'user', 'headers', 'trailers', 'files']
 
 const middleware = (joiOptions, options) => (req, res, next) => {
-  const validation = req.route.validation
+  // restify v7 uses req.route.spec
+  const routeDefinition = req.route.spec || req.route
+  const {validation} = routeDefinition
 
   if (!validation) {
     return setImmediate(next)
