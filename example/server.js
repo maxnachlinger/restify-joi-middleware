@@ -26,6 +26,22 @@ server.get({
   next()
 })
 
+server.get({
+  path: '/anythingErr/:id',
+  validation: {
+    params: Joi.object().keys({
+      id: Joi.number().min(0).required()
+    }).required()
+  },
+  errorResponder (transformedErr, req, res, next) {
+    req.ifError = transformedErr
+    return next()
+  }
+}, (req, res, next) => {
+  res.send(200, {err: req.ifError})
+  next()
+})
+
 server.post({
   path: '/',
   validation: {
@@ -35,6 +51,21 @@ server.post({
   }
 }, (req, res, next) => {
   res.send(201, {id: 1, name: req.body.name})
+  next()
+})
+
+server.post({
+  path: '/anything',
+  joiOpts: {
+    allowUnknown: true
+  },
+  validation: {
+    body: Joi.object().keys({
+      name: Joi.string().required()
+    }).required()
+  }
+}, (req, res, next) => {
+  res.send(201, {params: req.params})
   next()
 })
 

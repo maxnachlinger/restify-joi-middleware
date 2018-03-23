@@ -14,7 +14,15 @@ const defaultErrorResponder = (transformedErr, req, res, next) => next(transform
 const defaultKeysToValidate = ['params', 'body', 'query', 'user', 'headers', 'trailers', 'files']
 
 const middleware = (joiOptions, options) => (req, res, next) => {
-  const validation = req.route.validation
+  const routeDefinition = req.route.spec || req.route
+
+  const {validation, joiOpts, errorResponder} = routeDefinition
+
+  const localJoiOptions = typeof joiOpts === 'object'
+    ? joiOpts : joiOptions
+
+  const localErrorResponder = typeof errorResponder === 'function'
+    ? errorResponder : options.errorResponder
 
   if (!validation) {
     return setImmediate(next)
@@ -36,10 +44,10 @@ const middleware = (joiOptions, options) => (req, res, next) => {
     return accum
   }, {})
 
-  const result = joi.validate(toValidate, validation, joiOptions)
+  const result = joi.validate(toValidate, validation, localJoiOptions)
 
   if (result.error) {
-    return options.errorResponder(
+    return localErrorResponder(
       options.errorTransformer(toValidate, result.error),
       req, res, next
     )
