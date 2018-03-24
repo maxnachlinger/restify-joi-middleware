@@ -1,6 +1,6 @@
 {
   "name": "restify-joi-middleware",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "Simple joi middleware for restify.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,9 @@
     "node": ">8.0.0"
   },
   "standard": {
-    "env": [ "jest" ]
+    "env": [
+      "jest"
+    ]
   },
   "repository": {
     "type": "git",
