@@ -18,7 +18,7 @@ npm i restify-joi-middleware --save
 ```
 
 ### Note:
-Requires Node ``>4.0.0``.
+Requires Node ``>8.0.0``.
 
 ### Example:
 This example is [available here as well](./example/server.js).
@@ -42,9 +42,11 @@ server.use(validator())
 server.get({
   path: '/:id',
   validation: {
-    params: Joi.object().keys({
-      id: Joi.number().min(0).required()
-    }).required()
+    schema: {
+      params: Joi.object().keys({
+        id: Joi.number().min(0).required()
+      }).required()
+    }
   }
 }, (req, res, next) => {
   res.send(200, {id: req.params.id})
@@ -54,9 +56,17 @@ server.get({
 server.post({
   path: '/',
   validation: {
-    body: Joi.object().keys({
-      name: Joi.string().required()
-    }).required()
+    schema: {
+      body: Joi.object().keys({
+        name: Joi.string().required()
+      }).required()
+    },
+    // overrides middleware settings for this route
+    options: {
+      joiOptions: {
+        allowUnknown: false
+      }
+    }
   }
 }, (req, res, next) => {
   res.send(201, {id: 1, name: req.body.name})
@@ -66,15 +76,17 @@ server.post({
 server.put({
   path: '/:id',
   // Joi.object().keys({}) schemas work too
-  validation: Joi.object().keys({
-    params: Joi.object().keys({
-      id: Joi.number().min(0).required()
-    }).required(),
-    body: Joi.object().keys({
-      id: Joi.number().min(0).required(),
-      name: Joi.string().required()
-    }).required()
-  }).assert('params.id', Joi.ref('body.id'))
+  validation: { 
+    schema: Joi.object().keys({
+      params: Joi.object().keys({
+        id: Joi.number().min(0).required()
+      }).required(),
+      body: Joi.object().keys({
+        id: Joi.number().min(0).required(),
+        name: Joi.string().required()
+      }).required()
+    }).assert('params.id', Joi.ref('body.id'))
+  }
 }, (req, res, next) => {
   res.send(200, {id: 1, name: req.body.name})
   next()
@@ -83,30 +95,46 @@ server.put({
 server.listen(8080, () => console.log(`${server.name} listening on: ${server.url}`))
 ```
 
-### Quick Example
 Given the server above:
 ```sh
 curl 'http://localhost:8080/'
 # result
-{
-  "code": "BadRequest",
-  "message": "child \"params\" fails because [child \"id\" fails because [\"id\" must be a number]]"
-}
+# {
+#   "code": "BadRequest",
+#   "message": "child \"params\" fails because [child \"id\" fails because [\"id\" must be a number]]"
+# }
+
+curl -X POST -H "Content-Type: application/json" -d '{"color":"Blue"}' http://127.00.1:8080/
+# result
+# {
+#   "code":"BadRequest",
+#   "message":"child \"body\" fails because [child \"name\" fails because [\"name\" is required]]"
+# }
+
+curl -X PUT -H "Content-Type: application/json" -d '{"id": 1, "name":"Max"}' http://127.00.1:8080/2
+# result
+# {
+#   "code":"BadRequest",
+#   "message":"\"params.id\" validation failed because \"params.id\" failed to pass the assertion test"
+# }
 ```
 
-### Options:
-If you don't like how errors are returned or transformed from Joi errors to restify errors, you can change that. For example:
+### Middleware Options:
+If you don't like how errors are returned or transformed from Joi errors to restify errors, you can change that for 
+the entire plug-in. For example:
 ```javascript
 server.use(validator({
-  convert: true,
-  allowUnknown: true,
-  abortEarly: false
-  // .. all additional joi options
-}, {
+  joiOptions: {
+    convert: true,
+    allowUnknown: true,
+    abortEarly: false
+    // .. all additional joi options
+  },
   // changes the request keys validated
   keysToValidate: ['params', 'body', 'query', 'user', 'headers', 'trailers', 'files'],
   
-  // changes how joi errors are transformed to be returned - no details are returned in this case
+  // changes how joi errors are transformed to be returned - no error details are returned 
+  // in this case
   errorTransformer: (validationInput, joiError) => new restifyErrors.BadRequestError(),
   
   // changes how errors are returned
@@ -114,5 +142,45 @@ server.use(validator({
     res.send(400, transformedErr)
     return next()
   }
+}))
+```
+
+### Per-route Options
+You can also override any middleware setting above per route, e.g.:
+```javascript
+server.get({
+  path: '/:id',
+  validation: {
+    schema: {
+      params: Joi.object().keys({
+        id: Joi.number().min(0).required()
+      }).required()
+    },
+    options: {
+      joiOptions: {
+        allowUnknown: false
+        // .. all additional joi options
+      },
+      
+      // changes how errors are returned
+      errorResponder: (transformedErr, req, res, next) => {
+        res.send(400, transformedErr)
+        return next()
+      },
+      
+      // changes how joi errors are transformed to be returned - no error details are returned 
+      // in this case
+      errorTransformer: (validationInput, joiError) => new restifyErrors.BadRequestError()
+      
+      // keysToValidate can also be overridden here 
+    }
+  }
+}, (req, res, next) => {
+  res.send(200, {id: req.params.id})
+  next()
 })
+```
+### Tests
+```shell
+npm test
 ```

@@ -17,9 +17,11 @@ server.use(validator())
 server.get({
   path: '/:id',
   validation: {
-    params: Joi.object().keys({
-      id: Joi.number().min(0).required()
-    }).required()
+    schema: {
+      params: Joi.object().keys({
+        id: Joi.number().min(0).required()
+      }).required()
+    }
   }
 }, (req, res, next) => {
   res.send(200, {id: req.params.id})
@@ -29,9 +31,17 @@ server.get({
 server.post({
   path: '/',
   validation: {
-    body: Joi.object().keys({
-      name: Joi.string().required()
-    }).required()
+    schema: {
+      body: Joi.object().keys({
+        name: Joi.string().required()
+      }).required()
+    },
+    // overrides middleware settings for this route
+    options: {
+      joiOptions: {
+        allowUnknown: false
+      }
+    }
   }
 }, (req, res, next) => {
   res.send(201, {id: 1, name: req.body.name})
@@ -41,15 +51,17 @@ server.post({
 server.put({
   path: '/:id',
   // Joi.object().keys({}) schemas work too
-  validation: Joi.object().keys({
-    params: Joi.object().keys({
-      id: Joi.number().min(0).required()
-    }).required(),
-    body: Joi.object().keys({
-      id: Joi.number().min(0).required(),
-      name: Joi.string().required()
-    }).required()
-  }).assert('params.id', Joi.ref('body.id'))
+  validation: {
+    schema: Joi.object().keys({
+      params: Joi.object().keys({
+        id: Joi.number().min(0).required()
+      }).required(),
+      body: Joi.object().keys({
+        id: Joi.number().min(0).required(),
+        name: Joi.string().required()
+      }).required()
+    }).assert('params.id', Joi.ref('body.id'))
+  }
 }, (req, res, next) => {
   res.send(200, {id: 1, name: req.body.name})
   next()
