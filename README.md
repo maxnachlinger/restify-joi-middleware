@@ -34,8 +34,7 @@ server.use(restify.plugins.queryParser())
 server.use(restify.plugins.bodyParser({mapParams: false}))
 server.use(restify.plugins.gzipResponse())
 
-// you can pass along all the joi options here
-server.use(validator())
+server.use(validator()) // see "Middleware Options" for all options
 
 // additional middleware etc
 
@@ -96,7 +95,7 @@ server.listen(8080, () => console.log(`${server.name} listening on: ${server.url
 ```
 
 Given the server above:
-```sh
+```
 curl 'http://localhost:8080/'
 # result
 # {
@@ -181,6 +180,6 @@ server.get({
 })
 ```
 ### Tests
-```shell
+```
 npm test
 ```
