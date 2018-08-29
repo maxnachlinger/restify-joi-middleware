@@ -33,7 +33,7 @@
   "devDependencies": {
     "jest": "^22.4.3",
     "snazzy": "^7.1.1",
-    "standard": "^11.0.1",
+    "standard": "^12.0.0",
     "uuid": "^3.2.1"
   }
 }
