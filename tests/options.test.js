@@ -5,7 +5,7 @@ const uuidv4 = require('uuid/v4')
 const middleware = require('../')
 
 test('throws on invalid middleware options', () => {
-  expect(() => middleware({errorTransformer: {}}))
+  expect(() => middleware({ errorTransformer: {} }))
     .toThrowError(/Error: restify-joi-middleware, bad configuration found/)
 })
 
@@ -22,7 +22,7 @@ test('throws on invalid route options', () => {
             id: Joi.number().required()
           }
         },
-        options: {errorTransformer: {}}
+        options: { errorTransformer: {} }
       }
     }
   }
@@ -51,8 +51,8 @@ test('options.errorTransformer transforms errors', (done) => {
     }
   }
 
-  const joiOptions = {allowUnknown: true}
-  middleware({joiOptions, errorTransformer})(req, {send: done.fail}, (err) => {
+  const joiOptions = { allowUnknown: true }
+  middleware({ joiOptions, errorTransformer })(req, { send: done.fail }, (err) => {
     expect(err).toBeTruthy()
     expect(err.message).toBe(testErrorMessage)
     expect(errorTransformer).toHaveBeenCalledTimes(1)
@@ -84,8 +84,8 @@ test('route errorTransformer overrides middleware errorTransformer', (done) => {
     }
   }
 
-  const joiOptions = {allowUnknown: true}
-  middleware({joiOptions, errorTransformer})(req, {send: done.fail}, (err) => {
+  const joiOptions = { allowUnknown: true }
+  middleware({ joiOptions, errorTransformer })(req, { send: done.fail }, (err) => {
     expect(err).toBeTruthy()
     expect(err.message).toBe(testErrorMessage)
     expect(errorTransformer).not.toHaveBeenCalled()
@@ -117,8 +117,8 @@ test('options.errorResponder alters how the middleware responds to errors', (don
     }
   }
 
-  const joiOptions = {allowUnknown: true}
-  middleware({joiOptions, errorResponder})(req, {
+  const joiOptions = { allowUnknown: true }
+  middleware({ joiOptions, errorResponder })(req, {
     send: (code, body) => {
       expect(code).toBe(200)
       expect(body).toBe(testMessage)
@@ -161,8 +161,8 @@ test('route errorResponder overrides middleware errorResponder', (done) => {
     }
   }
 
-  const joiOptions = {allowUnknown: true}
-  middleware({joiOptions, errorResponder})(req, {
+  const joiOptions = { allowUnknown: true }
+  middleware({ joiOptions, errorResponder })(req, {
     send: (code, body) => {
       expect(code).toBe(200)
       expect(body).toBe(testMessage)

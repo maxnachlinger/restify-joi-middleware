@@ -26,7 +26,7 @@ test('fails on bad input via Joi.object().keys validations', (done) => {
     }
   }
 
-  middleware()(req, {send: done.fail}, (err) => {
+  middleware()(req, { send: done.fail }, (err) => {
     expect(err).toBeTruthy()
     expect(err.statusCode).toBe(400)
     done()
@@ -62,7 +62,7 @@ test('passes on valid request with params and body', (done) => {
     }
   }
 
-  middleware()(req, {send: done.fail}, (err) => {
+  middleware()(req, { send: done.fail }, (err) => {
     expect(err).toBeFalsy()
     done()
   })
@@ -99,7 +99,7 @@ test('handles v7 route definitions', (done) => {
     }
   }
 
-  middleware()(req, {send: done.fail}, (err) => {
+  middleware()(req, { send: done.fail }, (err) => {
     expect(err).toBeFalsy()
     done()
   })

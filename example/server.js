@@ -1,12 +1,12 @@
 const Joi = require('joi')
 const restify = require('restify')
-const {name, version} = require('./package.json')
+const { name, version } = require('./package.json')
 const validator = require('../')
 
-const server = restify.createServer({name, version})
+const server = restify.createServer({ name, version })
 server.use(restify.plugins.acceptParser(server.acceptable))
 server.use(restify.plugins.queryParser())
-server.use(restify.plugins.bodyParser({mapParams: false}))
+server.use(restify.plugins.bodyParser({ mapParams: false }))
 server.use(restify.plugins.gzipResponse())
 
 // you can pass along all the joi options here
@@ -24,7 +24,7 @@ server.get({
     }
   }
 }, (req, res, next) => {
-  res.send(200, {id: req.params.id})
+  res.send(200, { id: req.params.id })
   next()
 })
 
@@ -44,7 +44,7 @@ server.post({
     }
   }
 }, (req, res, next) => {
-  res.send(201, {id: 1, name: req.body.name})
+  res.send(201, { id: 1, name: req.body.name })
   next()
 })
 
@@ -63,7 +63,7 @@ server.put({
     }).assert('params.id', Joi.ref('body.id'))
   }
 }, (req, res, next) => {
-  res.send(200, {id: 1, name: req.body.name})
+  res.send(200, { id: 1, name: req.body.name })
   next()
 })
 

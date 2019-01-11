@@ -22,8 +22,8 @@ test('when the allowUnknown option is set, validation works with additional req.
     }
   }
 
-  const joiOptions = {allowUnknown: true}
-  middleware({joiOptions})(req, {send: done.fail}, (err) => {
+  const joiOptions = { allowUnknown: true }
+  middleware({ joiOptions })(req, { send: done.fail }, (err) => {
     expect(err).toBeFalsy()
     done()
   })
@@ -48,7 +48,7 @@ test('when the allowUnknown option is not set, validation fails with additional 
     }
   }
 
-  middleware({}, {})(req, {send: done.fail}, (err) => {
+  middleware({}, {})(req, { send: done.fail }, (err) => {
     expect(err).toBeTruthy()
     expect(err.statusCode).toBe(400)
     done()
@@ -72,8 +72,8 @@ test('validation writes back converted values when the convert option is set', (
     }
   }
 
-  const joiOptions = {convert: true}
-  middleware({joiOptions})(req, {send: done.fail}, (err) => {
+  const joiOptions = { convert: true }
+  middleware({ joiOptions })(req, { send: done.fail }, (err) => {
     expect(err).toBeFalsy()
     expect(req.params.id).toBe(2)
     expect(req.params.id).not.toBe('2')
@@ -100,8 +100,8 @@ test('validation preserves additional values present in the input when the conve
     }
   }
 
-  const joiOptions = {convert: true, allowUnknown: true}
-  middleware({joiOptions})(req, {send: done.fail}, (err) => {
+  const joiOptions = { convert: true, allowUnknown: true }
+  middleware({ joiOptions })(req, { send: done.fail }, (err) => {
     expect(err).toBeFalsy()
     expect(req.params.name).toBeTruthy()
     done()
@@ -123,14 +123,14 @@ test('route joiOptions override middleware ones', (done) => {
           }
         },
         options: {
-          joiOptions: {allowUnknown: true}
+          joiOptions: { allowUnknown: true }
         }
       }
     }
   }
 
-  const joiOptions = {convert: true, allowUnknown: false}
-  middleware({joiOptions})(req, {send: done.fail}, (err) => {
+  const joiOptions = { convert: true, allowUnknown: false }
+  middleware({ joiOptions })(req, { send: done.fail }, (err) => {
     expect(err).toBeFalsy()
     expect(req.params.name).toBeTruthy()
     done()

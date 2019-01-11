@@ -4,8 +4,8 @@
   "description": "Simple joi middleware for restify.",
   "main": "index.js",
   "scripts": {
-    "pretest": "./node_modules/.bin/standard --verbose | ./node_modules/.bin/snazzy",
-    "test": "jest"
+    "pretest": "$(npm bin)/standard --verbose | $(npm bin)/snazzy",
+    "test": "$(npm bin)/jest"
   },
   "engineStrict": true,
   "engines": {
@@ -27,13 +27,13 @@
   },
   "homepage": "https://github.com/maxnachlinger/restify-joi-middleware#readme",
   "dependencies": {
-    "joi": "^14.0.0",
-    "restify-errors": "^6.0.0"
+    "joi": "^14.3.1",
+    "restify-errors": "^6.1.1"
   },
   "devDependencies": {
-    "jest": "^22.4.3",
+    "jest": "^23.6.0",
     "snazzy": "^8.0.0",
-    "standard": "^11.0.1",
-    "uuid": "^3.2.1"
+    "standard": "^12.0.1",
+    "uuid": "^3.3.2"
   }
 }
