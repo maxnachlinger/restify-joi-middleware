@@ -26,7 +26,7 @@ const optionsSchema = {
 }
 
 const checkOptions = (defaults, input) => {
-  const {joiOptions, errorTransformer, errorResponder, keysToValidate} = defaults
+  const { joiOptions, errorTransformer, errorResponder, keysToValidate } = defaults
   const schema = {
     joiOptions: optionsSchema.joiOptions.default(joiOptions),
     errorTransformer: optionsSchema.errorTransformer.default(errorTransformer),
@@ -34,7 +34,7 @@ const checkOptions = (defaults, input) => {
     keysToValidate: optionsSchema.keysToValidate.default(keysToValidate)
   }
 
-  const {value, error} = joi.validate(input, schema, middlewareDefaults.joiOptions)
+  const { value, error } = joi.validate(input, schema, middlewareDefaults.joiOptions)
   if (error) {
     error.message = `Error: restify-joi-middleware, bad configuration found: ${error.message}`
     throw error
@@ -46,14 +46,14 @@ const checkOptions = (defaults, input) => {
 const routeOptionsCache = {}
 
 const getRouteOptions = (middlewareOptions, route) => {
-  const {name} = route
+  const { name } = route
   if (routeOptionsCache[name]) {
     return routeOptionsCache[name]
   }
 
   // restify v7 uses req.route.spec
   const routeDefinition = route.spec || route
-  const {options = middlewareOptions} = routeDefinition.validation || {}
+  const { options = middlewareOptions } = routeDefinition.validation || {}
 
   if (!routeOptionsCache[name]) {
     // validate route overrides, default to middleware options
@@ -69,7 +69,7 @@ const middleware = (mOptions = {}) => {
   return (req, res, next) => {
     // restify v7 uses req.route.spec
     const routeDefinition = req.route.spec || req.route
-    const {schema} = routeDefinition.validation || {}
+    const { schema } = routeDefinition.validation || {}
 
     // no validation found on route
     if (!schema) {
@@ -96,7 +96,7 @@ const middleware = (mOptions = {}) => {
       return accum
     }, {})
 
-    const {error, value} = joi.validate(toValidate, schema, joiOptions)
+    const { error, value } = joi.validate(toValidate, schema, joiOptions)
 
     if (error) {
       return errorResponder(
